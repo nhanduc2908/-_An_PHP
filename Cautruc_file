@@ -1,0 +1,377 @@
+course-management-pro/
+│
+├── 📁 app/
+│   ├── 📁 Modules/                          # 🔥 KIẾN TRÚC MODULE MỚI
+│   │   ├── 📁 Core/                         # Module lõi
+│   │   │   ├── 📁 Console/
+│   │   │   ├── 📁 Exceptions/
+│   │   │   ├── 📁 Http/
+│   │   │   │   ├── 📁 Middleware/
+│   │   │   │   └── 📁 Requests/
+│   │   │   ├── 📁 Providers/
+│   │   │   └── 📁 Traits/
+│   │   │
+│   │   ├── 📁 Auth/                         # Module xác thực
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── LoginController.php
+│   │   │   │   ├── RegisterController.php
+│   │   │   │   ├── ForgotPasswordController.php
+│   │   │   │   └── ResetPasswordController.php
+│   │   │   ├── 📁 Requests/
+│   │   │   │   ├── LoginRequest.php
+│   │   │   │   └── RegisterRequest.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── AuthService.php
+│   │   │   │   └── SocialAuthService.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   ├── User.php
+│   │   │   │   └── SocialAccount.php
+│   │   │   ├── 📁 Events/
+│   │   │   │   ├── UserLoggedIn.php
+│   │   │   │   └── UserRegistered.php
+│   │   │   ├── 📁 Listeners/
+│   │   │   │   ├── SendWelcomeEmail.php
+│   │   │   │   └── LogUserActivity.php
+│   │   │   ├── 📁 Mails/
+│   │   │   │   ├── WelcomeEmail.php
+│   │   │   │   └── PasswordResetEmail.php
+│   │   │   ├── 📁 Notifications/
+│   │   │   │   └── AccountCreated.php
+│   │   │   ├── 📁 Policies/
+│   │   │   │   └── UserPolicy.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   ├── 📁 views/
+│   │   │   │   │   ├── login.blade.php
+│   │   │   │   │   ├── register.blade.php
+│   │   │   │   │   └── forgot-password.blade.php
+│   │   │   │   └── 📁 lang/
+│   │   │   │       ├── 📁 en/
+│   │   │   │       └── 📁 vi/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   ├── 📁 Database/
+│   │   │   │   ├── 📁 Migrations/
+│   │   │   │   └── 📁 Seeders/
+│   │   │   ├── 📁 Tests/
+│   │   │   │   ├── 📁 Feature/
+│   │   │   │   └── 📁 Unit/
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Course/                       # Module khóa học
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── Admin/
+│   │   │   │   │   └── CourseController.php
+│   │   │   │   ├── Instructor/
+│   │   │   │   │   └── CourseController.php
+│   │   │   │   ├── Student/
+│   │   │   │   │   └── CourseController.php
+│   │   │   │   └── Api/
+│   │   │   │       └── CourseController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   ├── Course.php
+│   │   │   │   ├── Lesson.php
+│   │   │   │   ├── Category.php
+│   │   │   │   └── LessonProgress.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── CourseService.php
+│   │   │   │   ├── LessonService.php
+│   │   │   │   └── CategoryService.php
+│   │   │   ├── 📁 Requests/
+│   │   │   │   ├── CourseRequest.php
+│   │   │   │   └── LessonRequest.php
+│   │   │   ├── 📁 Events/
+│   │   │   │   ├── CourseCreated.php
+│   │   │   │   ├── CourseUpdated.php
+│   │   │   │   └── LessonCompleted.php
+│   │   │   ├── 📁 Listeners/
+│   │   │   │   ├── SendCourseNotification.php
+│   │   │   │   └── UpdateCourseProgress.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   ├── 📁 views/
+│   │   │   │   │   ├── 📁 admin/
+│   │   │   │   │   ├── 📁 instructor/
+│   │   │   │   │   └── 📁 student/
+│   │   │   │   └── 📁 lang/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   ├── admin.php
+│   │   │   │   ├── instructor.php
+│   │   │   │   ├── student.php
+│   │   │   │   └── api.php
+│   │   │   ├── 📁 Database/
+│   │   │   │   ├── 📁 Migrations/
+│   │   │   │   └── 📁 Seeders/
+│   │   │   ├── 📁 Tests/
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Enrollment/                   # Module đăng ký
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── EnrollmentController.php
+│   │   │   │   └── CertificateController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   ├── Enrollment.php
+│   │   │   │   └── Certificate.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── EnrollmentService.php
+│   │   │   │   └── CertificateService.php
+│   │   │   ├── 📁 Jobs/
+│   │   │   │   └── GenerateCertificate.php
+│   │   │   ├── 📁 Mails/
+│   │   │   │   └── EnrollmentConfirmation.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   ├── 📁 Database/
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Payment/                      # Module thanh toán
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── PaymentController.php
+│   │   │   │   └── WebhookController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   ├── Payment.php
+│   │   │   │   └── Transaction.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── PaymentService.php
+│   │   │   │   ├── Gateways/
+│   │   │   │   │   ├── VNPayGateway.php
+│   │   │   │   │   ├── MomoGateway.php
+│   │   │   │   │   ├── StripeGateway.php
+│   │   │   │   │   └── PayPalGateway.php
+│   │   │   │   └── WebhookService.php
+│   │   │   ├── 📁 Jobs/
+│   │   │   │   └── ProcessPayment.php
+│   │   │   ├── 📁 Events/
+│   │   │   │   └── PaymentCompleted.php
+│   │   │   ├── 📁 Listeners/
+│   │   │   │   └── SendPaymentReceipt.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   ├── 📁 Database/
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Instructor/                   # Module giảng viên
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── StudentController.php
+│   │   │   │   └── EarningController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   └── InstructorDetail.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── InstructorService.php
+│   │   │   │   └── EarningService.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Student/                      # Module học viên
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── ProfileController.php
+│   │   │   │   └── WishlistController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   └── Wishlist.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   └── StudentService.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Admin/                        # Module quản trị
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── UserController.php
+│   │   │   │   ├── ReportController.php
+│   │   │   │   └── SettingController.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── AdminService.php
+│   │   │   │   └── ReportService.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Review/                       # Module đánh giá
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   └── ReviewController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   └── Review.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   └── ReviewService.php
+│   │   │   ├── 📁 Events/
+│   │   │   │   └── ReviewSubmitted.php
+│   │   │   ├── 📁 Listeners/
+│   │   │   │   └── UpdateCourseRating.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Notification/                 # Module thông báo
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   └── NotificationController.php
+│   │   │   ├── 📁 Models/
+│   │   │   │   └── Notification.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── NotificationService.php
+│   │   │   │   ├── Channels/
+│   │   │   │   │   ├── EmailChannel.php
+│   │   │   │   │   ├── SMSChannel.php
+│   │   │   │   │   ├── PushChannel.php
+│   │   │   │   │   └── WebSocketChannel.php
+│   │   │   │   └── Templates/
+│   │   │   │       ├── CourseNotification.php
+│   │   │   │       └── PaymentNotification.php
+│   │   │   ├── 📁 Jobs/
+│   │   │   │   └── SendBulkNotification.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 Analytics/                    # Module phân tích
+│   │   │   ├── 📁 Controllers/
+│   │   │   │   └── AnalyticsController.php
+│   │   │   ├── 📁 Services/
+│   │   │   │   ├── AnalyticsService.php
+│   │   │   │   ├── ExportService.php
+│   │   │   │   └── Charts/
+│   │   │   │       ├── RevenueChart.php
+│   │   │   │       ├── UserChart.php
+│   │   │   │       └── CourseChart.php
+│   │   │   ├── 📁 Jobs/
+│   │   │   │   └── GenerateReport.php
+│   │   │   ├── 📁 Resources/
+│   │   │   │   └── 📁 views/
+│   │   │   ├── 📁 Routes/
+│   │   │   │   └── web.php
+│   │   │   ├── 📁 Database/
+│   │   │   │   └── 📁 Migrations/
+│   │   │   └── module.json
+│   │   │
+│   │   ├── 📁 API/                          # 🔥 API MODULE
+│   │   │   ├── 📁 V1/
+│   │   │   │   ├── 📁 Controllers/
+│   │   │   │   │   ├── AuthController.php
+│   │   │   │   │   ├── CourseController.php
+│   │   │   │   │   └── UserController.php
+│   │   │   │   ├── 📁 Requests/
+│   │   │   │   ├── 📁 Resources/
+│   │   │   │   │   ├── UserResource.php
+│   │   │   │   │   └── CourseResource.php
+│   │   │   │   └── 📁 Routes/
+│   │   │   │       └── api.php
+│   │   │   └── 📁 V2/
+│   │   │       ├── 📁 Controllers/
+│   │   │       ├── 📁 Resources/
+│   │   │       └── 📁 Routes/
+│   │   │
+│   │   └── 📁 Shared/                       # 🔥 SHARED MODULE
+│   │       ├── 📁 Traits/
+│   │       │   ├── HasImage.php
+│   │       │   ├── HasSlug.php
+│   │       │   └── HasActivityLog.php
+│   │       ├── 📁 Helpers/
+│   │       │   ├── helpers.php
+│   │       │   └── constants.php
+│   │       ├── 📁 Rules/
+│   │       │   └── StrongPassword.php
+│   │       ├── 📁 Services/
+│   │       │   ├── CacheService.php
+│   │       │   ├── FileUploadService.php
+│   │       │   └── ImageService.php
+│   │       └── 📁 Resources/
+│   │           └── 📁 views/
+│   │               └── 📁 components/
+│   │
+│   └── 📁 Core/                             # Core Application
+│       ├── 📁 Bootstrap/
+│       ├── 📁 Exceptions/
+│       └── 📁 Providers/
+│
+├── 📁 bootstrap/
+│
+├── 📁 config/
+│   ├── 📁 modules.php                       # Module configuration
+│   ├── 📁 payment.php
+│   ├── 📁 notification.php
+│   ├── 📁 analytics.php
+│   └── ...
+│
+├── 📁 database/
+│   ├── 📁 migrations/
+│   └── 📁 seeders/
+│
+├── 📁 public/
+│   ├── 📁 assets/
+│   │   ├── 📁 css/
+│   │   ├── 📁 js/
+│   │   ├── 📁 images/
+│   │   └── 📁 fonts/
+│   └── index.php
+│
+├── 📁 resources/
+│   ├── 📁 js/
+│   │   ├── 📁 modules/                     # 🔥 Module-based JS
+│   │   │   ├── 📁 auth/
+│   │   │   ├── 📁 course/
+│   │   │   ├── 📁 enrollment/
+│   │   │   ├── 📁 payment/
+│   │   │   └── 📁 shared/
+│   │   ├── app.js
+│   │   └── bootstrap.js
+│   │
+│   └── 📁 views/
+│       ├── 📁 layouts/
+│       └── 📁 modules/                     # 🔥 Module-based views
+│           ├── 📁 auth/
+│           ├── 📁 course/
+│           ├── 📁 enrollment/
+│           └── 📁 shared/
+│
+├── 📁 routes/
+│   ├── 📁 modules/                         # 🔥 Module-based routes
+│   │   ├── auth.php
+│   │   ├── course.php
+│   │   ├── enrollment.php
+│   │   ├── payment.php
+│   │   └── api.php
+│   ├── web.php
+│   └── api.php
+│
+├── 📁 storage/
+│
+├── 📁 tests/
+│   ├── 📁 Modules/                         # 🔥 Module-based tests
+│   │   ├── 📁 Auth/
+│   │   ├── 📁 Course/
+│   │   ├── 📁 Enrollment/
+│   │   └── 📁 Payment/
+│   ├── 📁 Feature/
+│   └── 📁 Unit/
+│
+├── 📁 docker/
+│   ├── 📁 nginx/
+│   ├── 📁 mysql/
+│   ├── 📁 redis/
+│   └── 📁 php/
+│
+├── .env
+├── .env.example
+├── composer.json
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+├── Dockerfile
+├── docker-compose.yml
+├── phpunit.xml
+└── README.md
