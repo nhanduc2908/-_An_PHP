@@ -1,295 +1,627 @@
-Dưới đây là **file README.md hoàn chỉnh** được viết gọn thành **1 file duy nhất**, tổng hợp đầy đủ tất cả thông tin về ứng dụng Android hệ thống bảo mật.
+# 📁 CẤU TRÚC HOÀN CHỈNH - SECURITY ASSESSMENT PLATFORM
+
+Dưới đây là **cấu trúc file hoàn chỉnh và chi tiết nhất** của dự án Security Assessment Platform:
 
 ---
 
-```markdown
-# 🔒 SECURITY AUDIT APP - HỆ THỐNG BẢO MẬT ANDROID TOÀN DIỆN
-
-## 📌 TỔNG QUAN
-
-**Security Audit App** là ứng dụng Android chuyên dụng để đánh giá, giám sát và nâng cao bảo mật toàn diện. Ứng dụng cung cấp **15 chức năng chính**, đánh giá theo **17 tiêu chí bảo mật** và **280 tiêu chí chi tiết**, hỗ trợ **4 loại tài khoản** với phân quyền rõ ràng, tích hợp **wrapper kết nối PHP backend**.
-
-| Thông số | Giá trị |
-|----------|---------|
-| Ngôn ngữ | Kotlin 2.0.0 |
-| Min SDK | 24 (Android 7.0) |
-| Target SDK | 34 (Android 14) |
-| Architecture | MVVM + Clean Architecture |
-| Dependency Injection | Dagger Hilt |
-| Database | Room + SQLCipher |
-| Backend | PHP (via ApiWrapper) |
-
----
-
-## 📱 15 CHỨC NĂNG CHÍNH (SIDEBAR)
-
-| # | Chức năng | Mô tả |
-|---|-----------|-------|
-| 1 | 📊 Dashboard | Hiển thị trạng thái bảo mật tổng thể, điểm 280 tiêu chí |
-| 2 | 🔑 Quản lý phiên đăng nhập | Xem và thu hồi session active |
-| 3 | 📱 Quản lý thiết bị tin cậy | Đăng ký / hủy thiết bị đã xác thực |
-| 4 | 🛡️ MFA & xác thực 2 lớp | TOTP, SMS, Email, WebAuthn |
-| 5 | 📜 Lịch sử hoạt động | Log chi tiết theo 280 tiêu chí |
-| 6 | 📄 Báo cáo bảo mật | Tự động xuất PDF/JSON định kỳ |
-| 7 | 🔐 Mã hóa tệp & thư mục | AES-256-GCM + ChaCha20 + Secure Container |
-| 8 | 🦠 Kiểm tra mã độc ứng dụng | Scan APK, permissions |
-| 9 | 🔑 Quản lý mật khẩu & khóa | Lưu trữ trong Keystore/StrongBox |
-| 10 | 🌐 Giám sát kết nối mạng | Cảnh báo MITM, root, proxy |
-| 11 | ⚙️ Chính sách bảo mật động | Cập nhật từ server (PHP) |
-| 12 | 💾 Sao lưu & khôi phục an toàn | End-to-end encrypted backup |
-| 13 | 🚨 Hỗ trợ khẩn cấp | Xóa dữ liệu từ xa, khóa app |
-| 14 | 🔍 Web Security Scanner | Quét XSS, SQLi, Header, API (gọi PHP) |
-| 15 | 🔢 Password Strength Meter | Đo độ mạnh, kiểm tra rò rỉ (gọi PHP) |
-
----
-
-## 🛡️ 17 TIÊU CHÍ BẢO MẬT
-
-| Nhóm | Tiêu chí |
-|------|----------|
-| **Xác thực** | 1. Mật khẩu mạnh (entropy, length) / 2. MFA bắt buộc / 3. Xác thực sinh trắc học / 4. Khóa bảo mật phần cứng StrongBox / 5. Timeout tự động đăng xuất |
-| **Mạng & Web** | 6. Phát hiện XSS / 7. Phát hiện SQL Injection / 8. Kiểm tra Security Headers / 9. Chống MITM, SSL pinning |
-| **Dữ liệu** | 10. Mã hóa local AES-256 / 11. Mã hóa TLS 1.3 khi truyền / 12. Không lưu mật khẩu plaintext |
-| **Ứng dụng** | 13. Chống root/jailbreak / 14. Chống debug & repackaging / 15. Phân quyền tối thiểu |
-| **Quản lý** | 16. Ghi log đầy đủ & không sửa được / 17. Cập nhật chính sách OTA từ PHP |
-
----
-
-## 📊 280 TIÊU CHÍ ĐÁNH GIÁ CHI TIẾT
-
-Chia thành **14 nhóm**, mỗi nhóm 20 tiêu chí, chấm điểm 0-5 → tổng tối đa 1400 điểm:
-
-| Nhóm | Nội dung | Số tiêu chí |
-|------|----------|-------------|
-| 1 | Độ mạnh mật khẩu (Entropy, pattern, dictionary) | 20 |
-| 2 | Quét XSS (Reflected, Stored, DOM-based) | 20 |
-| 3 | Quét SQL Injection (Boolean, Time-based, Union) | 20 |
-| 4 | File Inclusion & Command Execution | 20 |
-| 5 | Security Headers (CSP, HSTS, X-Frame, etc.) | 20 |
-| 6 | API Security (XXE, SSRF, IDOR, Path Traversal) | 20 |
-| 7 | Mã hóa & lưu trữ an toàn | 20 |
-| 8 | Xác thực & MFA | 20 |
-| 9 | Bảo mật mạng & MITM | 20 |
-| 10 | Chống root/debug/repack | 20 |
-| 11 | Quản lý phiên & thiết bị | 20 |
-| 12 | Logging & giám sát | 20 |
-| 13 | Backup & khôi phục | 20 |
-| 14 | Chính sách & tuân thủ | 20 |
-| **TỔNG** | | **280** |
-
----
-
-## 👥 4 LOẠI TÀI KHOẢN BẢO MẬT
-
-| Loại tài khoản | Quyền hạn | Chức năng được phép |
-|----------------|-----------|---------------------|
-| 👑 **Super Admin** | Toàn quyền | Tất cả 15 chức năng + quản lý user |
-| 📊 **Security Auditor** | Chỉ xem báo cáo, log, quét | Dashboard, lịch sử, web scanner, password meter (chỉ xem) |
-| ⚙️ **Operator** | Thực thi tác vụ | Quản lý phiên, thiết bị, MFA, mã hóa, backup |
-| 👁️ **Viewer** | Chỉ xem, không thay đổi | Xem dashboard, báo cáo (read-only) |
-
----
-
-## 🔧 KIẾN TRÚC ỨNG DỤNG
+## 🗺️ SƠ ĐỒ CẤU TRÚC TỔNG THỂ
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      UI Layer (MVVM)                         │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
-│  │Fragment  │ │ViewModel │ │  Adapter │ │  Widget  │       │
-│  └────┬─────┘ └────┬─────┘ └──────────┘ └──────────┘       │
-├───────┴────────────┴─────────────────────────────────────────┤
-│                      Domain Layer (Use Cases)                │
-├─────────────────────────────────────────────────────────────┤
-│                      Data Layer                              │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐    │
-│  │ Room + SQLCipher│ │ Repository  │ │ ApiWrapper (PHP)│    │
-│  └──────────────┘ └──────────────┘ └──────────────────┘    │
-├─────────────────────────────────────────────────────────────┤
-│                    Security Layer                            │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │ Keystore │ StrongBox │ Biometric │ AES │ Shamir │    │   │
-│  └──────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
+security-assessment-platform/
+│
+├── 📄 .env.example
+├── 📄 .gitignore
+├── 📄 docker-compose.yml
+├── 📄 Makefile
+├── 📄 README.md
+│
+├── 📁 backend/                    # 🐘 PHP Backend (Core API)
+├── 📁 frontend/                   # 🎨 HTML/CSS/JS Frontend
+├── 📁 realtime/                   # 🔌 Node.js WebSocket Server
+├── 📁 database/                   # 🗄️ SQL Scripts
+├── 📁 docs/                       # 📚 Documentation
+├── 📁 scripts/                    # 🔧 Utility Scripts
+├── 📁 .github/                    # 🤖 CI/CD Workflows
+├── 📁 .docker/                    # 🐳 Docker Configs
+└── 📁 .k8s/                       # ☸️ Kubernetes Manifests
 ```
 
 ---
 
-## 📁 CẤU TRÚC THƯ MỤC CODE
+## 📂 CHI TIẾT TỪNG THƯ MỤC
+
+### **1. BACKEND (PHP)**
 
 ```
-app/src/main/java/com/security/app/
-├── common/                 # Constants, utils, base classes
-├── data/                   # Local (Room), remote (API), repository
-├── domain/                 # Models, use cases
-├── ui/                     # 15 chức năng (dashboard, webscanner, passwordmeter...)
-├── network/wrapper/        # ApiWrapper, WebScannerWrapper, PasswordWrapper, SyncWrapper
-├── security/               # Crypto, keystore, integrity, validator
-├── evaluation/             # 280 tiêu chí (14 groups, checkers, calculator)
-├── di/                     # Dagger Hilt modules
-├── service/                # Background services, workers
-├── broadcast/              # Broadcast receivers
-└── widget/                 # Home screen widgets
+backend/
+│
+├── 📄 index.php
+├── 📄 .htaccess
+├── 📄 composer.json
+├── 📄 artisan
+│
+├── 📁 api/                        # API Routes (17 files)
+│   ├── 📄 v1.php
+│   ├── 📄 auth.php
+│   ├── 📄 users.php
+│   ├── 📄 roles.php
+│   ├── 📄 permissions.php
+│   ├── 📄 servers.php
+│   ├── 📄 categories.php
+│   ├── 📄 criteria.php
+│   ├── 📄 assessments.php
+│   ├── 📄 vulnerabilities.php
+│   ├── 📄 alerts.php
+│   ├── 📄 reports.php
+│   ├── 📄 dashboard.php
+│   ├── 📄 backup.php
+│   ├── 📄 profile.php
+│   ├── 📄 audit.php
+│   └── 📄 settings.php
+│
+├── 📁 core/                       # Core Framework (15 files)
+│   ├── 📄 Autoload.php
+│   ├── 📄 Router.php
+│   ├── 📄 Controller.php
+│   ├── 📄 Model.php
+│   ├── 📄 Database.php
+│   ├── 📄 JWT.php
+│   ├── 📄 Middleware.php
+│   ├── 📄 RBAC.php
+│   ├── 📄 Validator.php
+│   ├── 📄 Logger.php
+│   ├── 📄 Cache.php
+│   ├── 📄 Encryption.php
+│   ├── 📄 Event.php
+│   ├── 📄 Queue.php
+│   └── 📄 Helper.php
+│
+├── 📁 controllers/                # Controllers (16 files)
+│   ├── 📄 AuthController.php
+│   ├── 📄 UserController.php
+│   ├── 📄 RoleController.php
+│   ├── 📄 PermissionController.php
+│   ├── 📄 ServerController.php
+│   ├── 📄 CategoryController.php
+│   ├── 📄 CriteriaController.php
+│   ├── 📄 AssessmentController.php
+│   ├── 📄 VulnerabilityController.php
+│   ├── 📄 AlertController.php
+│   ├── 📄 ReportController.php
+│   ├── 📄 DashboardController.php
+│   ├── 📄 BackupController.php
+│   ├── 📄 ProfileController.php
+│   ├── 📄 AuditController.php
+│   └── 📄 SettingController.php
+│
+├── 📁 models/                     # Models (16 files)
+│   ├── 📄 User.php
+│   ├── 📄 Role.php
+│   ├── 📄 Permission.php
+│   ├── 📄 Server.php
+│   ├── 📄 Category.php
+│   ├── 📄 Criteria.php
+│   ├── 📄 AssessmentResult.php
+│   ├── 📄 AssessmentReport.php
+│   ├── 📄 Vulnerability.php
+│   ├── 📄 Alert.php
+│   ├── 📄 AuditLog.php
+│   ├── 📄 Backup.php
+│   ├── 📄 Setting.php
+│   ├── 📄 Session.php
+│   ├── 📄 Token.php
+│   └── 📄 Notification.php
+│
+├── 📁 middleware/                 # Middleware (10 files)
+│   ├── 📄 AuthMiddleware.php
+│   ├── 📄 PermissionMiddleware.php
+│   ├── 📄 RateLimitMiddleware.php
+│   ├── 📄 CorsMiddleware.php
+│   ├── 📄 SecurityHeadersMiddleware.php
+│   ├── 📄 GuestMiddleware.php
+│   ├── 📄 LogMiddleware.php
+│   ├── 📄 CacheMiddleware.php
+│   ├── 📄 MaintenanceMiddleware.php
+│   └── 📄 JsonMiddleware.php
+│
+├── 📁 services/                   # Services (12 files)
+│   ├── 📄 AuthService.php
+│   ├── 📄 ScannerService.php
+│   ├── 📄 ScoreCalculatorService.php
+│   ├── 📄 AttackDetectorService.php
+│   ├── 📄 SshConnectionService.php
+│   ├── 📄 ApiCallService.php
+│   ├── 📄 FileUploadService.php
+│   ├── 📄 BackupService.php
+│   ├── 📄 RealtimeService.php
+│   ├── 📄 ReportGeneratorService.php
+│   ├── 📄 NotificationService.php
+│   └── 📄 ImportExportService.php
+│
+├── 📁 repositories/               # Repositories (6 files)
+│   ├── 📄 UserRepository.php
+│   ├── 📄 ServerRepository.php
+│   ├── 📄 CriteriaRepository.php
+│   ├── 📄 AssessmentRepository.php
+│   ├── 📄 AlertRepository.php
+│   └── 📄 ReportRepository.php
+│
+├── 📁 jobs/                       # Queue Jobs (8 files)
+│   ├── 📄 ScanServerJob.php
+│   ├── 📄 SendEmailJob.php
+│   ├── 📄 GenerateReportJob.php
+│   ├── 📄 BackupDatabaseJob.php
+│   ├── 📄 CleanupLogsJob.php
+│   ├── 📄 SyncServersJob.php
+│   ├── 📄 CheckVulnerabilitiesJob.php
+│   └── 📄 SendAlertJob.php
+│
+├── 📁 listeners/                  # Event Listeners (6 files)
+│   ├── 📄 SendLoginNotification.php
+│   ├── 📄 LogUserAction.php
+│   ├── 📄 CreateAuditTrail.php
+│   ├── 📄 SendAlertOnVulnerability.php
+│   ├── 📄 UpdateDashboardCache.php
+│   └── 📄 PushRealtimeEvent.php
+│
+├── 📁 exceptions/                 # Custom Exceptions (8 files)
+│   ├── 📄 ValidationException.php
+│   ├── 📄 AuthException.php
+│   ├── 📄 PermissionException.php
+│   ├── 📄 NotFoundException.php
+│   ├── 📄 DatabaseException.php
+│   ├── 📄 ScanException.php
+│   ├── 📄 BackupException.php
+│   └── 📄 ApiException.php
+│
+├── 📁 config/                     # Configuration (12 files)
+│   ├── 📄 app.php
+│   ├── 📄 database.php
+│   ├── 📄 jwt.php
+│   ├── 📄 rbac.php
+│   ├── 📄 criteria_categories.php
+│   ├── 📄 criteria_280.php
+│   ├── 📄 menu.php
+│   ├── 📄 mail.php
+│   ├── 📄 cache.php
+│   ├── 📄 queue.php
+│   ├── 📄 filesystems.php
+│   └── 📄 services.php
+│
+├── 📁 lang/                       # Language Files (3 languages x 4 files)
+│   ├── 📁 en/
+│   │   ├── 📄 auth.php
+│   │   ├── 📄 validation.php
+│   │   ├── 📄 criteria.php
+│   │   └── 📄 messages.php
+│   ├── 📁 vi/
+│   │   ├── 📄 auth.php
+│   │   ├── 📄 validation.php
+│   │   ├── 📄 criteria.php
+│   │   └── 📄 messages.php
+│   └── 📁 ja/
+│       ├── 📄 auth.php
+│       ├── 📄 validation.php
+│       ├── 📄 criteria.php
+│       └── 📄 messages.php
+│
+├── 📁 storage/                    # Storage
+│   ├── 📁 logs/                   # Log files (9 files)
+│   │   ├── 📄 app.log
+│   │   ├── 📄 auth.log
+│   │   ├── 📄 scan.log
+│   │   ├── 📄 error.log
+│   │   ├── 📄 attack.log
+│   │   ├── 📄 api.log
+│   │   ├── 📄 database.log
+│   │   ├── 📄 cron.log
+│   │   └── 📄 debug.log
+│   ├── 📁 uploads/                # Upload directories (4 folders)
+│   │   ├── 📁 evidence/
+│   │   ├── 📁 reports/
+│   │   ├── 📁 avatars/
+│   │   └── 📁 temp/
+│   ├── 📁 backups/                # Backups (2 folders)
+│   │   ├── 📁 database/
+│   │   └── 📁 files/
+│   ├── 📁 cache/
+│   └── 📁 framework/
+│       ├── 📁 sessions/
+│       ├── 📁 cache/
+│       └── 📁 views/
+│
+├── 📁 bootstrap/                  # Bootstrap (3 files)
+│   ├── 📄 app.php
+│   ├── 📄 routes.php
+│   └── 📄 middleware.php
+│
+├── 📁 database/                   # Database
+│   ├── 📁 migrations/             # 36 migration files
+│   │   ├── 📄 2024_01_01_000001_create_users_table.php
+│   │   ├── 📄 2024_01_01_000002_create_roles_table.php
+│   │   ├── 📄 2024_01_01_000003_create_permissions_table.php
+│   │   ├── 📄 2024_01_01_000004_create_role_permission_table.php
+│   │   ├── 📄 2024_01_01_000005_create_categories_table.php
+│   │   ├── 📄 2024_01_01_000006_create_criteria_table.php
+│   │   ├── 📄 2024_01_01_000007_create_servers_table.php
+│   │   ├── 📄 2024_01_01_000008_create_user_server_table.php
+│   │   ├── 📄 2024_01_01_000009_create_assessment_results_table.php
+│   │   ├── 📄 2024_01_01_000010_create_assessment_reports_table.php
+│   │   ├── 📄 2024_01_01_000011_create_vulnerabilities_table.php
+│   │   ├── 📄 2024_01_01_000012_create_vulnerability_history_table.php
+│   │   ├── 📄 2024_01_01_000013_create_alerts_table.php
+│   │   ├── 📄 2024_01_01_000014_create_alert_notes_table.php
+│   │   ├── 📄 2024_01_01_000015_create_audit_logs_table.php
+│   │   ├── 📄 2024_01_01_000016_create_login_attempts_table.php
+│   │   ├── 📄 2024_01_01_000017_create_user_sessions_table.php
+│   │   ├── 📄 2024_01_01_000018_create_password_resets_table.php
+│   │   ├── 📄 2024_01_01_000019_create_backups_table.php
+│   │   ├── 📄 2024_01_01_000020_create_system_settings_table.php
+│   │   ├── 📄 2024_01_01_000021_create_notifications_table.php
+│   │   ├── 📄 2024_01_01_000022_create_attack_logs_table.php
+│   │   ├── 📄 2024_01_01_000023_create_blocked_ips_table.php
+│   │   ├── 📄 2024_01_01_000024_create_cve_cache_table.php
+│   │   ├── 📄 2024_01_01_000025_create_api_logs_table.php
+│   │   ├── 📄 2024_01_01_000026_create_rate_limits_table.php
+│   │   ├── 📄 2024_01_01_000027_create_report_schedules_table.php
+│   │   ├── 📄 2024_01_01_000028_create_jobs_table.php
+│   │   ├── 📄 2024_01_01_000029_create_failed_jobs_table.php
+│   │   ├── 📄 2024_01_15_000001_add_indexes_to_users_table.php
+│   │   ├── 📄 2024_01_15_000002_add_indexes_to_criteria_table.php
+│   │   ├── 📄 2024_01_15_000003_add_indexes_to_assessment_results_table.php
+│   │   ├── 📄 2024_01_15_000004_add_indexes_to_alerts_table.php
+│   │   ├── 📄 2024_01_15_000005_add_indexes_to_audit_logs_table.php
+│   │   ├── 📄 2024_01_15_000006_add_foreign_keys_table.php
+│   │   ├── 📄 2024_01_20_000001_add_two_factor_fields_to_users_table.php
+│   │   ├── 📄 2024_01_20_000002_add_soft_deletes_to_servers_table.php
+│   │   └── 📄 2024_01_20_000003_add_status_to_assessment_reports_table.php
+│   └── 📁 seeds/                   # 7 seeders
+│       ├── 📄 DatabaseSeeder.php
+│       ├── 📄 RoleSeeder.php
+│       ├── 📄 PermissionSeeder.php
+│       ├── 📄 CategorySeeder.php
+│       ├── 📄 CriteriaSeeder.php
+│       ├── 📄 UserSeeder.php
+│       └── 📄 ServerSeeder.php
+│
+├── 📁 tests/                      # Tests (11 files)
+│   ├── 📁 Unit/
+│   │   ├── 📄 AuthTest.php
+│   │   ├── 📄 RBACTest.php
+│   │   ├── 📄 CriteriaTest.php
+│   │   ├── 📄 ScoreCalculatorTest.php
+│   │   └── 📄 ScannerTest.php
+│   ├── 📁 Feature/
+│   │   ├── 📄 ApiAuthTest.php
+│   │   ├── 📄 ApiCriteriaTest.php
+│   │   ├── 📄 ApiAssessmentTest.php
+│   │   └── 📄 ApiReportTest.php
+│   ├── 📁 Integration/
+│   │   ├── 📄 DatabaseTest.php
+│   │   └── 📄 QueueTest.php
+│   ├── 📄 TestCase.php
+│   └── 📄 CreatesApplication.php
+│
+├── 📄 phpunit.xml
+└── 📄 artisan
 ```
 
 ---
 
-## 🌐 KẾT NỐI PHP BACKEND (API WRAPPER)
+### **2. FRONTEND (HTML/CSS/JS)**
 
-### Các endpoint PHP cần triển khai
-
-```php
-POST /api/v1/webscanner/scan       # Quét lỗ hổng website (XSS, SQLi, Header)
-GET  /api/v1/webscanner/result/{id}# Lấy kết quả quét theo ID
-GET  /api/v1/webscanner/history    # Lịch sử quét
-
-POST /api/v1/password/check        # Kiểm tra mật khẩu rò rỉ (HIBP)
-POST /api/v1/password/evaluate     # Đánh giá độ mạnh mật khẩu (AI)
-
-GET  /api/v1/policy/sync           # Đồng bộ chính sách bảo mật
-POST /api/v1/cve/sync              # Đồng bộ database CVE
-POST /api/v1/logs/upload           # Upload logs bảo mật
-POST /api/v1/evaluation/sync       # Đồng bộ 280 tiêu chí
 ```
-
-### Mã wrapper chính (ApiWrapper.kt)
-
-```kotlin
-class ApiWrapper @Inject constructor(
-    private val keystoreHelper: KeystoreHelper,
-    private val aesEncryption: AesEncryption
-) {
-    suspend fun get(endpoint: String): ApiResult<JSONObject>
-    suspend fun post(endpoint: String, body: JSONObject): ApiResult<JSONObject>
-}
-```
-
-### Mã WebScannerWrapper.kt (gọi PHP)
-
-```kotlin
-class WebScannerWrapper @Inject constructor(
-    private val apiWrapper: ApiWrapper
-) {
-    suspend fun scanWebsite(url: String): WebScanResult
-    suspend fun getScanResult(scanId: String): WebScanResult
-    suspend fun getScanHistory(limit: Int): List<WebScanHistory>
-}
-```
-
-### Mã PasswordWrapper.kt (gọi PHP)
-
-```kotlin
-class PasswordWrapper @Inject constructor(
-    private val apiWrapper: ApiWrapper
-) {
-    suspend fun checkPasswordLeaked(password: String): PasswordLeakResult
-    suspend fun evaluatePasswordStrength(password: String): PasswordStrengthResult
-}
-```
-
----
-
-## 🔐 NÂNG CẤP 7: MÃ HÓA TỆP & THƯ MỤC
-
-| Tính năng cũ | Tính năng nâng cấp |
-|--------------|-------------------|
-| AES-256 CBC | AES-256 GCM + ChaCha20-Poly1305 (lựa chọn động) |
-| Keystore đơn | Keystore + StrongBox + Shamir Secret Sharing |
-| Mã hóa từng file | Secure Container (giống VeraCrypt) |
-| 5 tiêu chí | 20 tiêu chí (nhóm 7 của 280) |
-
-### Các lớp core nâng cấp 7
-
-```kotlin
-// data/local/file/SecureContainer.kt
-data class SecureContainer(
-    val id: String, val name: String, val path: String,
-    val encryptionAlgorithm: EncryptionAlgorithm, val isMounted: Boolean
-)
-
-// security/crypto/ShamirSecretSharing.kt
-class ShamirSecretSharing {
-    fun splitSecret(secret: ByteArray, parts: Int, threshold: Int): List<ByteArray>
-    fun combineShares(shares: List<ByteArray>): ByteArray
-}
-```
-
----
-
-## 📦 CÀI ĐẶT & CHẠY DỰ ÁN
-
-### Yêu cầu hệ thống
-- Android Studio Hedgehog | 2023.1.1 trở lên
-- JDK 17
-- Gradle 8.0+
-- PHP 8.0+ (cho backend)
-
-### Các bước cài đặt
-
-```bash
-# 1. Clone repository
-git clone https://github.com/your-repo/security-audit-app.git
-cd security-audit-app
-
-# 2. Mở project bằng Android Studio
-
-# 3. Cập nhật BASE_URL trong ApiWrapper.kt
-BASE_URL = "https://your-php-server.com/api/"
-
-# 4. Build project
-./gradlew build
-
-# 5. Chạy ứng dụng
-./gradlew installDebug
-```
-
-### Cấu hình ProGuard (proguard-rules.pro)
-
-```proguard
-# Keep security classes
--keep class com.security.app.security.** { *; }
--keep class com.security.app.evaluation.** { *; }
-
-# Keep native methods
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-
-# Retrofit + OkHttp
--keepattributes Signature, InnerClasses, EnclosingMethod
--dontwarn okhttp3.**
+frontend/
+│
+├── 📄 index.html
+│
+├── 📁 pages/                      # HTML Pages (28 files)
+│   ├── 📄 login.html
+│   ├── 📄 404.html
+│   ├── 📄 dashboard.html
+│   ├── 📄 servers.html
+│   ├── 📄 servers-add.html
+│   ├── 📄 servers-edit.html
+│   ├── 📄 servers-detail.html
+│   ├── 📄 categories.html
+│   ├── 📄 criteria.html
+│   ├── 📄 criteria-add.html
+│   ├── 📄 criteria-edit.html
+│   ├── 📄 criteria-import.html
+│   ├── 📄 assessments.html
+│   ├── 📄 assessment-run.html
+│   ├── 📄 assessment-detail.html
+│   ├── 📄 vulnerabilities.html
+│   ├── 📄 alerts.html
+│   ├── 📄 users.html
+│   ├── 📄 users-add.html
+│   ├── 📄 users-edit.html
+│   ├── 📄 roles.html
+│   ├── 📄 backup.html
+│   ├── 📄 reports.html
+│   ├── 📄 report-detail.html
+│   ├── 📄 profile.html
+│   └── 📄 settings.html
+│
+├── 📁 assets/
+│   ├── 📁 css/                    # CSS Files (7 files)
+│   │   ├── 📄 main.css
+│   │   ├── 📄 admin.css
+│   │   ├── 📄 dashboard.css
+│   │   ├── 📄 criteria.css
+│   │   ├── 📄 responsive.css
+│   │   ├── 📄 dark-mode.css
+│   │   └── 📄 print.css
+│   │
+│   ├── 📁 js/                     # JavaScript Files (20 files)
+│   │   ├── 📄 app.js
+│   │   ├── 📄 api.js
+│   │   ├── 📄 auth.js
+│   │   ├── 📄 rbac.js
+│   │   ├── 📄 utils.js
+│   │   ├── 📄 dashboard.js
+│   │   ├── 📄 servers.js
+│   │   ├── 📄 categories.js
+│   │   ├── 📄 criteria.js
+│   │   ├── 📄 assessments.js
+│   │   ├── 📄 alerts.js
+│   │   ├── 📄 users.js
+│   │   ├── 📄 roles.js
+│   │   ├── 📄 backup.js
+│   │   ├── 📄 reports.js
+│   │   ├── 📄 profile.js
+│   │   ├── 📄 socket.js
+│   │   ├── 📄 charts.js
+│   │   └── 📄 datatable.js
+│   │
+│   ├── 📁 vendor/                 # Third-party Libraries
+│   │   ├── 📁 bootstrap/
+│   │   ├── 📁 jquery/
+│   │   ├── 📁 chart.js/
+│   │   ├── 📁 socket.io/
+│   │   ├── 📁 datatables/
+│   │   ├── 📁 select2/
+│   │   ├── 📁 moment/
+│   │   ├── 📁 exceljs/
+│   │   ├── 📁 jspdf/
+│   │   ├── 📁 fontawesome/
+│   │   └── 📁 sweetalert/
+│   │
+│   └── 📁 images/                 # Images
+│       ├── 📁 logo/
+│       │   ├── 📄 logo.png
+│       │   ├── 📄 logo-white.png
+│       │   └── 📄 favicon.ico
+│       ├── 📁 icons/
+│       │   ├── 📄 critical.svg
+│       │   ├── 📄 high.svg
+│       │   ├── 📄 medium.svg
+│       │   └── 📄 low.svg
+│       └── 📄 loading.gif
+│
+└── 📁 templates/                  # Template Parts (4 files)
+    ├── 📄 sidebar.php
+    ├── 📄 header.php
+    ├── 📄 footer.php
+    └── 📄 modal.php
 ```
 
 ---
 
-## 🧪 TESTING
+### **3. REALTIME (Node.js WebSocket)**
 
-```bash
-# Chạy unit tests
-./gradlew test
-
-# Chạy instrumentation tests
-./gradlew connectedAndroidTest
-
-# Chạy security tests riêng
-./gradlew testSecurityUnitTest
+```
+realtime/
+│
+├── 📄 server.js
+├── 📄 package.json
+├── 📄 .env
+├── 📄 ecosystem.config.js
+│
+├── 📁 src/
+│   ├── 📄 index.js
+│   ├── 📄 app.js
+│   │
+│   ├── 📁 config/
+│   │   ├── 📄 database.js
+│   │   ├── 📄 redis.js
+│   │   └── 📄 socket.js
+│   │
+│   ├── 📁 middleware/
+│   │   ├── 📄 auth.js
+│   │   ├── 📄 rateLimit.js
+│   │   └── 📄 logger.js
+│   │
+│   ├── 📁 handlers/
+│   │   ├── 📄 connection.js
+│   │   ├── 📄 auth.js
+│   │   ├── 📄 alert.js
+│   │   ├── 📄 scan.js
+│   │   ├── 📄 assessment.js
+│   │   ├── 📄 metric.js
+│   │   └── 📄 notification.js
+│   │
+│   ├── 📁 rooms/
+│   │   ├── 📄 userRoom.js
+│   │   ├── 📄 serverRoom.js
+│   │   └── 📄 adminRoom.js
+│   │
+│   └── 📁 utils/
+│       ├── 📄 logger.js
+│       └── 📄 helpers.js
+│
+└── 📁 tests/
+    ├── 📄 socket.test.js
+    └── 📄 handler.test.js
 ```
 
 ---
 
-## 📄 GIẤY PHÉP
+### **4. DATABASE (SQL)**
 
-MIT License - Xem file [LICENSE](LICENSE)
+```
+database/
+│
+├── 📄 schema.sql
+├── 📄 seed_all.sql
+├── 📄 seed_categories_17.sql
+├── 📄 seed_criteria_280.sql
+├── 📄 seed_roles.sql
+├── 📄 seed_permissions.sql
+├── 📄 seed_users.sql
+│
+├── 📁 migrations/                 # 11 migration files
+│   ├── 📄 V1__Create_users_table.sql
+│   ├── 📄 V2__Create_roles_table.sql
+│   ├── 📄 V3__Create_categories_table.sql
+│   ├── 📄 V4__Create_criteria_table.sql
+│   ├── 📄 V5__Create_servers_table.sql
+│   ├── 📄 V6__Create_assessment_results_table.sql
+│   ├── 📄 V7__Create_reports_table.sql
+│   ├── 📄 V8__Create_alerts_table.sql
+│   ├── 📄 V9__Create_vulnerabilities_table.sql
+│   ├── 📄 V10__Create_audit_logs_table.sql
+│   └── 📄 V11__Add_indexes.sql
+│
+├── 📁 procedures/                 # 4 stored procedures
+│   ├── 📄 sp_calculate_score.sql
+│   ├── 📄 sp_get_dashboard_stats.sql
+│   ├── 📄 sp_cleanup_old_logs.sql
+│   └── 📄 sp_generate_report.sql
+│
+├── 📁 triggers/                   # 3 triggers
+│   ├── 📄 trg_audit_user_changes.sql
+│   ├── 📄 trg_update_server_score.sql
+│   └── 📄 trg_create_alert_on_fail.sql
+│
+└── 📁 views/                      # 3 views
+    ├── 📄 vw_server_summary.sql
+    ├── 📄 vw_compliance_status.sql
+    └── 📄 vw_monthly_trend.sql
+```
 
 ---
 
-## 📧 LIÊN HỆ
+### **5. DOCUMENTATION**
 
-- **Email:** security@auditapp.com
-- **Website:** https://security-audit-app.com
+```
+docs/
+│
+├── 📄 README.md
+├── 📄 INSTALLATION.md
+├── 📄 DEPLOYMENT.md
+│
+├── 📁 api/
+│   ├── 📄 authentication.md
+│   ├── 📄 users.md
+│   ├── 📄 criteria.md
+│   ├── 📄 assessments.md
+│   ├── 📄 reports.md
+│   └── 📄 openapi.yaml
+│
+├── 📁 guides/
+│   ├── 📄 user-manual.md
+│   ├── 📄 admin-manual.md
+│   ├── 📄 security-officer-guide.md
+│   └── 📄 viewer-guide.md
+│
+├── 📁 references/
+│   ├── 📄 280-criteria-list.md
+│   ├── 📄 17-categories.md
+│   ├── 📄 scoring-formula.md
+│   ├── 📄 rbac-matrix.md
+│   └── 📄 compliance-mapping.md
+│
+└── 📁 architecture/
+    ├── 📄 system-architecture.png
+    ├── 📄 database-er-diagram.png
+    └── 📄 sequence-diagrams.md
+```
 
 ---
 
+### **6. SCRIPTS**
 
+```
+scripts/
+│
+├── 📄 deploy.sh
+├── 📄 backup.sh
+├── 📄 restore.sh
+├── 📄 import_criteria.php
+├── 📄 export_criteria.php
+├── 📄 run_assessment.php
+├── 📄 clean_logs.php
+├── 📄 create_admin.php
+├── 📄 reset_password.php
+├── 📄 generate_report.php
+├── 📄 monitor.php
+└── 📄 sync_servers.php
+```
 
+---
 
+### **7. CI/CD & DEVOPS**
+
+```
+.github/workflows/
+├── 📄 deploy.yml
+├── 📄 test.yml
+├── 📄 backup.yml
+└── 📄 security-scan.yml
+
+.docker/
+├── 📄 Dockerfile.php
+├── 📄 Dockerfile.nginx
+├── 📄 Dockerfile.node
+└── 📄 docker-entrypoint.sh
+
+.k8s/
+├── 📄 deployment.yaml
+├── 📄 service.yaml
+├── 📄 ingress.yaml
+├── 📄 configmap.yaml
+└── 📄 secret.yaml
+```
+
+---
+
+## 📊 THỐNG KÊ TỔNG HỢP
+
+| Loại | Số lượng | Mô tả |
+|------|----------|-------|
+| **Backend Files** | ~200 | PHP core, controllers, models, services |
+| **Frontend Files** | ~60 | HTML, CSS, JS, assets |
+| **Realtime Files** | ~15 | Node.js WebSocket server |
+| **Database Files** | ~50 | Migrations, seeders, procedures |
+| **Documentation** | ~20 | API docs, user guides |
+| **Scripts** | ~12 | Utility bash/php scripts |
+| **Config Files** | ~15 | Environment, Docker, K8s |
+| **Tests** | ~15 | Unit, feature, integration |
+
+**TỔNG CỘNG: ~387 FILES**
+
+---
+
+## 🎯 TÓM TẮT
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                  CẤU TRÚC HOÀN CHỈNH                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ✅ Backend API:     17 route files, 16 controllers           │
+│   ✅ Core Framework:   15 core classes                          │
+│   ✅ Database:         29 tables, 36 migrations                │
+│   ✅ Frontend:         28 pages, 20 JS files, 7 CSS files      │
+│   ✅ Realtime:         Node.js WebSocket server                 │
+│   ✅ Security:         JWT, RBAC, Middleware, Encryption       │
+│   ✅ Testing:          Unit, Feature, Integration tests         │
+│   ✅ DevOps:           Docker, K8s, CI/CD                       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+**🎉 ĐÂY LÀ CẤU TRÚC HOÀN CHỈNH CỦA DỰ ÁN SECURITY ASSESSMENT PLATFORM!**
