@@ -1,0 +1,449 @@
+Dưới đây là **cấu trúc file hiện tại** của ứng dụng Android hệ thống bảo mật sau tất cả các lần cập nhật và nâng cấp.
+
+---
+
+## CẤU TRÚC FILE HIỆN TẠI (TỔNG HỢP ĐẦY ĐỦ)
+
+```
+app/
+├── src/main/java/com/security/app/
+│   │
+│   ├── MainActivity.kt
+│   ├── SecurityApplication.kt
+│   │
+│   ├── common/                                 # LỚP DÙNG CHUNG
+│   │   ├── constants/
+│   │   │   ├── AppConstants.kt
+│   │   │   ├── SecurityCriteria.kt             # 17 tiêu chí bảo mật
+│   │   │   └── EvaluationCriteria.kt           # 280 tiêu chí đánh giá
+│   │   ├── extensions/
+│   │   │   ├── ContextExt.kt
+│   │   │   ├── StringExt.kt
+│   │   │   └── ViewExt.kt
+│   │   ├── utils/
+│   │   │   ├── EncryptionUtils.kt
+│   │   │   ├── NetworkUtils.kt
+│   │   │   ├── PermissionUtils.kt
+│   │   │   └── BiometricUtils.kt
+│   │   └── base/
+│   │       ├── BaseActivity.kt
+│   │       ├── BaseFragment.kt
+│   │       ├── BaseViewModel.kt
+│   │       └── BaseAdapter.kt
+│   │
+│   ├── data/                                   # TẦNG DỮ LIỆU
+│   │   ├── local/
+│   │   │   ├── database/
+│   │   │   │   ├── AppDatabase.kt
+│   │   │   │   ├── dao/
+│   │   │   │   │   ├── UserDao.kt
+│   │   │   │   │   ├── SessionDao.kt
+│   │   │   │   │   ├── LogDao.kt
+│   │   │   │   │   ├── DeviceDao.kt
+│   │   │   │   │   ├── ReportDao.kt
+│   │   │   │   │   └── ScanResultDao.kt
+│   │   │   │   └── entities/
+│   │   │   │       ├── UserEntity.kt
+│   │   │   │       ├── SessionEntity.kt
+│   │   │   │       ├── SecurityLogEntity.kt
+│   │   │   │       ├── TrustedDeviceEntity.kt
+│   │   │   │       ├── ReportEntity.kt
+│   │   │   │       └── WebScanEntity.kt
+│   │   │   ├── preferences/
+│   │   │   │   ├── EncryptedPrefs.kt
+│   │   │   │   └── AppPrefs.kt
+│   │   │   └── file/
+│   │   │       ├── EncryptedFileManager.kt     # NÂNG CẤP 7
+│   │   │       ├── SecureContainer.kt
+│   │   │       └── FileEncryptionEngine.kt
+│   │   └── remote/
+│   │       ├── api/
+│   │       │   ├── ApiService.kt
+│   │       │   ├── RetrofitClient.kt
+│   │       │   └── endpoints/
+│   │       │       ├── PolicyEndpoint.kt
+│   │       │       ├── ReportEndpoint.kt
+│   │       │       └── UpdateEndpoint.kt
+│   │       ├── model/
+│   │       │   ├── PolicyResponse.kt
+│   │       │   ├── UpdateResponse.kt
+│   │       │   └── LeakedPasswordResponse.kt
+│   │       └── repository/
+│   │           ├── UserRepository.kt
+│   │           ├── SecurityRepository.kt
+│   │           ├── ScanRepository.kt
+│   │           └── PolicyRepository.kt
+│   │
+│   ├── domain/                                 # TẦNG DOMAIN (USE CASES)
+│   │   ├── model/
+│   │   │   ├── User.kt
+│   │   │   ├── SecurityScore.kt
+│   │   │   ├── Vulnerability.kt
+│   │   │   └── AccountType.kt                  # 4 loại tài khoản
+│   │   └── usecase/
+│   │       ├── auth/
+│   │       │   ├── LoginUseCase.kt
+│   │       │   ├── ValidateMfaUseCase.kt
+│   │       │   └── CheckBiometricUseCase.kt
+│   │       ├── scan/
+│   │       │   ├── ScanWebUseCase.kt
+│   │       │   ├── CheckPasswordStrengthUseCase.kt
+│   │       │   └── ScanMalwareUseCase.kt
+│   │       ├── encryption/
+│   │       │   ├── EncryptFileUseCase.kt
+│   │       │   ├── DecryptFileUseCase.kt
+│   │       │   └── CreateSecureContainerUseCase.kt
+│   │       └── evaluation/
+│   │           ├── EvaluateAllCriteriaUseCase.kt
+│   │           ├── EvaluateSecurityCriteriaUseCase.kt
+│   │           └── GenerateReportUseCase.kt
+│   │
+│   ├── ui/                                     # TẦNG GIAO DIỆN (15 CHỨC NĂNG)
+│   │   ├── dashboard/                          # Chức năng 1
+│   │   │   ├── DashboardFragment.kt
+│   │   │   ├── DashboardViewModel.kt
+│   │   │   └── DashboardAdapter.kt
+│   │   │
+│   │   ├── session/                            # Chức năng 2
+│   │   │   ├── SessionManagerFragment.kt
+│   │   │   ├── SessionManagerViewModel.kt
+│   │   │   └── SessionAdapter.kt
+│   │   │
+│   │   ├── device/                             # Chức năng 3
+│   │   │   ├── TrustedDeviceFragment.kt
+│   │   │   ├── TrustedDeviceViewModel.kt
+│   │   │   └── DeviceAdapter.kt
+│   │   │
+│   │   ├── mfa/                                # Chức năng 4
+│   │   │   ├── MfaSetupFragment.kt
+│   │   │   ├── MfaVerifyFragment.kt
+│   │   │   ├── MfaViewModel.kt
+│   │   │   └── totp/
+│   │   │       ├── TotpGenerator.kt
+│   │   │       └── QrCodeScanner.kt
+│   │   │
+│   │   ├── history/                            # Chức năng 5
+│   │   │   ├── SecurityHistoryFragment.kt
+│   │   │   ├── SecurityHistoryViewModel.kt
+│   │   │   ├── LogAdapter.kt
+│   │   │   └── filter/
+│   │   │       ├── LogFilterDialog.kt
+│   │   │       └── LogFilterOptions.kt
+│   │   │
+│   │   ├── report/                             # Chức năng 6
+│   │   │   ├── ReportFragment.kt
+│   │   │   ├── ReportViewModel.kt
+│   │   │   ├── pdf/
+│   │   │   │   ├── PdfGenerator.kt
+│   │   │   │   └── PdfExportService.kt
+│   │   │   └── json/
+│   │   │       └── JsonExporter.kt
+│   │   │
+│   │   ├── encryption/                         # Chức năng 7 (NÂNG CẤP)
+│   │   │   ├── FileEncryptionFragment.kt
+│   │   │   ├── FileEncryptionViewModel.kt
+│   │   │   ├── SecureContainerFragment.kt
+│   │   │   ├── SecureContainerViewModel.kt
+│   │   │   ├── adapter/
+│   │   │   │   ├── FileBrowserAdapter.kt
+│   │   │   │   └── ContainerAdapter.kt
+│   │   │   └── components/
+│   │   │       ├── EncryptionProgressDialog.kt
+│   │   │       ├── KeyManagementDialog.kt
+│   │   │       └── ShamirShareDialog.kt
+│   │   │
+│   │   ├── malware/                            # Chức năng 8
+│   │   │   ├── MalwareScanFragment.kt
+│   │   │   ├── MalwareScanViewModel.kt
+│   │   │   ├── scanner/
+│   │   │   │   ├── ApkAnalyzer.kt
+│   │   │   │   ├── PermissionAnalyzer.kt
+│   │   │   │   └── SignatureChecker.kt
+│   │   │   └── MalwareResultAdapter.kt
+│   │   │
+│   │   ├── password/                           # Chức năng 9
+│   │   │   ├── PasswordManagerFragment.kt
+│   │   │   ├── PasswordManagerViewModel.kt
+│   │   │   ├── PasswordEntryDialog.kt
+│   │   │   ├── adapter/
+│   │   │   │   └── PasswordEntryAdapter.kt
+│   │   │   └── keystore/
+│   │   │       ├── KeystoreManager.kt
+│   │   │       └── StrongBoxManager.kt
+│   │   │
+│   │   ├── network/                            # Chức năng 10
+│   │   │   ├── NetworkMonitorFragment.kt
+│   │   │   ├── NetworkMonitorViewModel.kt
+│   │   │   ├── detector/
+│   │   │   │   ├── RootDetector.kt
+│   │   │   │   ├── ProxyDetector.kt
+│   │   │   │   ├── MitmDetector.kt
+│   │   │   │   └── VpnDetector.kt
+│   │   │   └── service/
+│   │   │       └── NetworkMonitorService.kt
+│   │   │
+│   │   ├── policy/                             # Chức năng 11
+│   │   │   ├── SecurityPolicyFragment.kt
+│   │   │   ├── SecurityPolicyViewModel.kt
+│   │   │   ├── PolicyUpdater.kt
+│   │   │   └── PolicyViewerAdapter.kt
+│   │   │
+│   │   ├── backup/                             # Chức năng 12
+│   │   │   ├── BackupFragment.kt
+│   │   │   ├── BackupViewModel.kt
+│   │   │   ├── engine/
+│   │   │   │   ├── BackupEngine.kt
+│   │   │   │   ├── RestoreEngine.kt
+│   │   │   │   └── E2eeBackup.kt
+│   │   │   └── schedule/
+│   │   │       ├── BackupScheduler.kt
+│   │   │       └── BackupWorker.kt
+│   │   │
+│   │   ├── emergency/                          # Chức năng 13
+│   │   │   ├── EmergencyFragment.kt
+│   │   │   ├── EmergencyViewModel.kt
+│   │   │   ├── RemoteWipeManager.kt
+│   │   │   ├── LockdownManager.kt
+│   │   │   └── EmergencyContactDialog.kt
+│   │   │
+│   │   ├── webscanner/                         # Chức năng 14
+│   │   │   ├── WebScannerFragment.kt
+│   │   │   ├── WebScannerViewModel.kt
+│   │   │   ├── engines/
+│   │   │   │   ├── XssEngine.kt
+│   │   │   │   ├── SqlInjectionEngine.kt
+│   │   │   │   ├── FileInclusionEngine.kt
+│   │   │   │   ├── CommandInjectionEngine.kt
+│   │   │   │   ├── HeaderChecker.kt
+│   │   │   │   └── ApiSecurityEngine.kt
+│   │   │   ├── model/
+│   │   │   │   ├── Vulnerability.kt
+│   │   │   │   └── ScanReport.kt
+│   │   │   └── adapter/
+│   │   │       └── VulnerabilityAdapter.kt
+│   │   │
+│   │   ├── passwordmeter/                      # Chức năng 15
+│   │   │   ├── PasswordMeterFragment.kt
+│   │   │   ├── PasswordMeterViewModel.kt
+│   │   │   ├── strength/
+│   │   │   │   ├── EntropyCalculator.kt
+│   │   │   │   ├── PatternDetector.kt
+│   │   │   │   ├── DictionaryChecker.kt
+│   │   │   │   └── LeakedChecker.kt
+│   │   │   ├── ui/
+│   │   │   │   ├── PasswordStrengthBar.kt
+│   │   │   │   └── StrengthIndicatorView.kt
+│   │   │   └── result/
+│   │   │       └── PasswordResultDialog.kt
+│   │   │
+│   │   ├── settings/                           # Cài đặt
+│   │   │   ├── SettingsFragment.kt
+│   │   │   ├── SettingsViewModel.kt
+│   │   │   └── preferences/
+│   │   │       ├── SecurityPrefs.kt
+│   │   │       └── NotificationPrefs.kt
+│   │   │
+│   │   ├── auth/                               # Xác thực
+│   │   │   ├── LoginFragment.kt
+│   │   │   ├── LoginViewModel.kt
+│   │   │   ├── RegisterFragment.kt
+│   │   │   ├── MfaVerifyFragment.kt
+│   │   │   ├── BiometricAuthDialog.kt
+│   │   │   └── account/
+│   │   │       ├── AccountTypeSelector.kt
+│   │   │       └── AccountSwitcher.kt
+│   │   │
+│   │   └── common/
+│   │       ├── LoadingDialog.kt
+│   │       ├── ErrorDialog.kt
+│   │       ├── ConfirmDialog.kt
+│   │       ├── CustomSnackbar.kt
+│   │       └── SecurityToast.kt
+│   │
+│   ├── network/                                # TẦNG MẠNG (WRAPPER PHP)
+│   │   ├── wrapper/
+│   │   │   ├── ApiWrapper.kt                   # Wrapper chính
+│   │   │   ├── SecurityApiWrapper.kt
+│   │   │   ├── WebScannerWrapper.kt            # Gọi PHP quét web
+│   │   │   ├── PasswordWrapper.kt              # Gọi PHP kiểm tra mật khẩu
+│   │   │   └── SyncWrapper.kt                  # Đồng bộ dữ liệu
+│   │   ├── interceptors/
+│   │   │   ├── AuthInterceptor.kt
+│   │   │   ├── EncryptionInterceptor.kt
+│   │   │   └── LoggingInterceptor.kt
+│   │   └── models/
+│   │       ├── ApiResponse.kt
+│   │       ├── ScanRequest.kt
+│   │       ├── ScanResponse.kt
+│   │       └── PasswordCheckRequest.kt
+│   │
+│   ├── security/                               # TẦNG BẢO MẬT CỐT LÕI
+│   │   ├── crypto/
+│   │   │   ├── AesEncryption.kt
+│   │   │   ├── ChaCha20Encryption.kt
+│   │   │   ├── KeyGenerator.kt
+│   │   │   ├── KeyManager.kt
+│   │   │   ├── ShamirSecretSharing.kt          # NÂNG CẤP 7
+│   │   │   └── SecureRandom.kt
+│   │   ├── keystore/
+│   │   │   ├── KeystoreHelper.kt
+│   │   │   ├── StrongBoxHelper.kt
+│   │   │   └── BiometricKeystore.kt
+│   │   ├── integrity/
+│   │   │   ├── PlayIntegrityChecker.kt
+│   │   │   ├── SafetyNetHelper.kt
+│   │   │   └── AppIntegrityVerifier.kt
+│   │   ├── obfuscation/
+│   │   │   ├── ProguardConfig.kt
+│   │   │   └── StringObfuscator.kt
+│   │   └── validator/
+│   │       ├── InputValidator.kt
+│   │       ├── PasswordValidator.kt
+│   │       └── UrlValidator.kt
+│   │
+│   ├── evaluation/                             # HỆ THỐNG ĐÁNH GIÁ 280 TIÊU CHÍ
+│   │   ├── EvaluationEngine.kt
+│   │   ├── criteria/
+│   │   │   ├── CriteriaGroup.kt
+│   │   │   ├── Criterion.kt
+│   │   │   └── CriterionWeight.kt
+│   │   ├── calculator/
+│   │   │   ├── ScoreCalculator.kt
+│   │   │   ├── WeightedScoreCalculator.kt
+│   │   │   └── CategoryScoreCalculator.kt
+│   │   ├── checker/
+│   │   │   ├── PasswordCriteriaChecker.kt
+│   │   │   ├── WebXssCriteriaChecker.kt
+│   │   │   ├── WebSqlCriteriaChecker.kt
+│   │   │   ├── FileInclusionChecker.kt
+│   │   │   ├── HeaderSecurityChecker.kt
+│   │   │   ├── ApiSecurityChecker.kt
+│   │   │   ├── EncryptionChecker.kt
+│   │   │   ├── AuthenticationChecker.kt
+│   │   │   ├── NetworkChecker.kt
+│   │   │   ├── AntiTamperChecker.kt
+│   │   │   ├── SessionChecker.kt
+│   │   │   ├── LoggingChecker.kt
+│   │   │   ├── BackupChecker.kt
+│   │   │   └── PolicyChecker.kt
+│   │   └── report/
+│   │       ├── DetailedReportGenerator.kt
+│   │       ├── SummaryReportGenerator.kt
+│   │       └── CriteriaStatus.kt
+│   │
+│   ├── di/                                     # DEPENDENCY INJECTION (HILT)
+│   │   ├── AppModule.kt
+│   │   ├── DatabaseModule.kt
+│   │   ├── NetworkModule.kt
+│   │   ├── SecurityModule.kt
+│   │   ├── RepositoryModule.kt
+│   │   └── UseCaseModule.kt
+│   │
+│   ├── service/                                # BACKGROUND SERVICES
+│   │   ├── SecurityMonitorService.kt
+│   │   ├── AutoScanWorker.kt
+│   │   ├── ReportScheduler.kt
+│   │   ├── PolicySyncWorker.kt
+│   │   └── NotificationHelper.kt
+│   │
+│   ├── broadcast/                              # BROADCAST RECEIVERS
+│   │   ├── BootReceiver.kt
+│   │   ├── ScreenLockReceiver.kt
+│   │   └── PackageChangeReceiver.kt
+│   │
+│   └── widget/                                 # HOME SCREEN WIDGETS
+│       ├── SecurityScoreWidget.kt
+│       └── QuickScanWidget.kt
+│
+├── src/main/res/                               # RESOURCES
+│   ├── layout/
+│   │   ├── activity_main.xml
+│   │   ├── fragment_dashboard.xml
+│   │   ├── fragment_web_scanner.xml
+│   │   ├── fragment_password_meter.xml
+│   │   ├── fragment_file_encryption.xml
+│   │   ├── dialog_encryption_key.xml
+│   │   ├── nav_header_sidebar.xml
+│   │   └── ... (các layout khác)
+│   ├── menu/
+│   │   └── navigation_menu.xml                 # 15 mục sidebar
+│   ├── navigation/
+│   │   └── nav_graph.xml
+│   ├── values/
+│   │   ├── colors.xml
+│   │   ├── strings.xml
+│   │   ├── themes.xml
+│   │   ├── dimens.xml
+│   │   └── security_criteria.xml               # 280 tiêu chí
+│   ├── drawable/
+│   │   ├── ic_menu_dashboard.xml
+│   │   ├── ic_menu_webscan.xml
+│   │   ├── ic_menu_password.xml
+│   │   ├── ic_menu_encryption.xml
+│   │   └── ... (các icon khác)
+│   ├── raw/
+│   │   ├── default_policy.json
+│   │   ├── common_passwords.txt
+│   │   └── xss_payloads.txt
+│   └── xml/
+│       ├── backup_rules.xml
+│       ├── data_extraction_rules.xml
+│       └── widget_info.xml
+│
+├── src/main/assets/                            # ASSETS
+│   ├── ml_models/
+│   │   └── xss_detector.tflite
+│   └── security/
+│       └── ca_certificates.bks
+│
+├── src/main/java/com/security/app/native/      # NATIVE CODE (C++)
+│   ├── native-lib.cpp
+│   ├── encryption_native.cpp
+│   ├── anti_debug.cpp
+│   └── CMakeLists.txt
+│
+├── src/test/java/                              # UNIT TESTS
+│   ├── security/
+│   │   ├── EncryptionTest.kt
+│   │   ├── PasswordStrengthTest.kt
+│   │   └── WebScannerTest.kt
+│   └── evaluation/
+│       └── CriteriaEvaluationTest.kt
+│
+├── src/androidTest/java/                       # INSTRUMENTATION TESTS
+│   ├── ui/
+│   │   ├── DashboardTest.kt
+│   │   └── WebScannerTest.kt
+│   └── security/
+│       └── KeystoreTest.kt
+│
+├── build.gradle (Module: app)
+├── proguard-rules.pro
+└── google-services.json
+```
+
+---
+
+## TÓM TẮT THỐNG KÊ FILE HIỆN TẠI
+
+| Thành phần | Số lượng file ước tính |
+|------------|----------------------|
+| Activities & Fragments | ~25 |
+| ViewModels | ~15 |
+| Adapters | ~10 |
+| Use Cases | ~12 |
+| Repositories | ~8 |
+| Database (DAO + Entities) | ~14 |
+| Network (Wrapper + Interceptors) | ~10 |
+| Security core | ~18 |
+| Evaluation (280 criteria) | ~22 |
+| Services & Workers | ~8 |
+| DI Modules | ~6 |
+| Resources (XML) | ~50+ |
+| Native code | ~4 |
+| Tests | ~10+ |
+| **TỔNG** | **~220+ files** |
+
+---
+
+Bạn có muốn tôi **xuất ra file cây thư mục dạng text** hoặc **giải thích chi tiết một module cụ thể** không?
